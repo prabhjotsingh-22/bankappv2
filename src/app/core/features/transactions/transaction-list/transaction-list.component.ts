@@ -4,6 +4,7 @@ import { TransactionResponse } from '../../../models/transaction.model';
 import { AccountService } from '../../../services/account.service';
 import { AccountResponse } from '../../../models/account.model';
 import { AuthService } from '../../../services/auth.service';
+import { Role } from '../../../models/user.model';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule } from '@angular/forms'; // for [formGroup]
 import { FormsModule } from '@angular/forms'; 
@@ -30,7 +31,7 @@ export class TransactionListComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.isManager = this.authService.getUserRole() === 'ROLE_MANAGER';
+    this.isManager = this.authService.getUserRole() === Role.ROLE_MANAGER;
     this.loadAccounts();
   }
 
