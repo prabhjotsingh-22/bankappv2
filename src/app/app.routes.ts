@@ -17,6 +17,7 @@ import { AccountsPageComponent } from './core/features/accounts/accounts-page/ac
 import { UsersPageComponent } from './core/features/users/users-page/users-page.component';
 import { TransactionsPageComponent } from './core/features/transactions/transactions-page/transactions-page.component';
 import { Role } from './core/models/user.model';
+import { ApprovalsPageComponent } from './core/features/approvals/approvals-page/approvals-page.component';
 
 export const routes: Routes = [
 
@@ -80,6 +81,13 @@ export const routes: Routes = [
           { path: 'list', component: UserListComponent },
           { path: '', redirectTo: 'list', pathMatch: 'full' }
         ]
+      },
+
+      // Approvals (manager only)
+      {
+        path: 'approvals',
+        component: ApprovalsPageComponent,
+        data: { roles: [Role.ROLE_MANAGER] }
       }
 
     ]

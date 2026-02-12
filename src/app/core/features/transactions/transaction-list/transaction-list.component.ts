@@ -23,6 +23,8 @@ export class TransactionListComponent implements OnInit {
   isManager: boolean = false;
   loading: boolean = false;
   errorMessage: string = '';
+  page = 1;
+  readonly pageSize = 10;
 
   constructor(
     private transactionService: TransactionService,
@@ -38,11 +40,11 @@ export class TransactionListComponent implements OnInit {
   loadAccounts(): void {
     this.accountService.getAllAccounts().subscribe({
       next: (accounts) => this.accounts = accounts,
-      error: (err) => this.errorMessage = 'Failed to load accounts.'
+      error: () => this.errorMessage = 'Failed to load accounts.'
     });
   }
 
-  onAccountChange(): void {
+  loadTransactions(): void {
     if (!this.selectedAccountId) {
       this.transactions = [];
       return;
@@ -52,13 +54,39 @@ export class TransactionListComponent implements OnInit {
     this.transactionService.getTransactionsByAccount(this.selectedAccountId).subscribe({
       next: (data) => {
         this.transactions = data;
+        this.page = 1;
         this.loading = false;
       },
-      error: (err) => {
+      error: () => {
         this.errorMessage = 'Failed to load transactions.';
         this.loading = false;
       }
     });
+  }
+
+  get pagedTransactions(): TransactionResponse[] {
+    const start = (this.page - 1) * this.pageSize;
+    return this.transactions.slice(start, start + this.pageSize);
+  }
+
+  get hasPrev(): boolean {
+    return this.page > 1;
+  }
+
+  get hasNext(): boolean {
+    return this.page * this.pageSize < this.transactions.length;
+  }
+
+  prevPage(): void {
+    if (this.hasPrev) {
+      this.page--;
+    }
+  }
+
+  nextPage(): void {
+    if (this.hasNext) {
+      this.page++;
+    }
   }
 
 }

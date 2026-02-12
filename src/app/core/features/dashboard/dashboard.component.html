@@ -31,7 +31,19 @@
       </div>
     </div>
 
-    <ng-container *ngIf="recentTransactions && recentTransactions.length > 0; else emptyState">
+    <ng-container *ngIf="loadingTransactions">
+      <div class="state state--loading">
+        Loading recent transactions…
+      </div>
+    </ng-container>
+
+    <ng-container *ngIf="!loadingTransactions && transactionsError">
+      <div class="state state--error">
+        {{ transactionsError }}
+      </div>
+    </ng-container>
+
+    <ng-container *ngIf="!loadingTransactions && !transactionsError && recentTransactions && recentTransactions.length > 0; else emptyState">
       <table class="table">
         <thead>
           <tr>
